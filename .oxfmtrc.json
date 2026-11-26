@@ -1,1 +1,9 @@
-{ "ignorePatterns": ["postgres/**", "keycloak/**", "extras/**"] }
+{
+  "ignorePatterns": [
+    "postgres/**",
+    "keycloak/**",
+    "extras/**",
+    ".drizzle-pull/**",
+    "src/repository/generated/**"
+  ]
+}

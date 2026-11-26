@@ -1,0 +1,6 @@
+import postgres from "postgres";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { databaseCredentials } from "../config/database.mts";
+
+export const sql = postgres(databaseCredentials());
+export const db = drizzle(sql);

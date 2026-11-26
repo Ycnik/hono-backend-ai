@@ -7,3 +7,4 @@ password.txt
 *.pem
 *.crt
 Untitled-1.sql
+.drizzle-pull/

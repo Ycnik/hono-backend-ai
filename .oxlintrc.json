@@ -1,4 +1,10 @@
 {
   "categories": { "correctness": "error" },
-  "ignorePatterns": ["postgres/**", "keycloak/**", "extras/**"]
+  "ignorePatterns": [
+    "postgres/**",
+    "keycloak/**",
+    "extras/**",
+    ".drizzle-pull/**",
+    "src/repository/generated/**"
+  ]
 }
