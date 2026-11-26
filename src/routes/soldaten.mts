@@ -1,3 +1,4 @@
+import { adminOnly } from "../config/keycloak.mts";
 import { Hono } from "hono";
 import { idSchema, suche } from "../model/soldat.mts";
 import { detail, liste } from "../repository/lesen.mts";
@@ -40,5 +41,5 @@ async function update(c: Context, replace: boolean) {
   const row = await updateSoldat(id, version, input, replace);
   return c.body(null, 204, { ETag: `"${row.version}"` });
 }
-soldaten.put("/:id", (c) => update(c, true));
+soldaten.put("/:id", adminOnly, (c) => update(c, true));
 soldaten.patch("/:id", (c) => update(c, false));

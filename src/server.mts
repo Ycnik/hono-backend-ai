@@ -1,6 +1,7 @@
 import { serve } from "@hono/node-server";
 import { readFileSync } from "node:fs";
 import { createSecureServer } from "node:http2";
+import { createServer as createHttpsServer } from "node:https";
 import { db, sql } from "./repository/database.mts";
 import { soldatInSoldat } from "./repository/generated/schema.mts";
 import { app } from "./routes/app.mts";
@@ -24,7 +25,10 @@ try {
 
 serve(
   {
-    fetch: app.fetch,
+    fetch: async (request) => {
+      const response = await app.fetch(request);
+      return new Response(response.body, { status: response.status, headers: response.headers });
+    },
     hostname,
     port,
     createServer: createSecureServer,
@@ -35,4 +39,15 @@ serve(
       `PostgreSQL verbunden. Hono ist bereit: https://${hostname}:${address.port}/health (HTTP/2). Beenden mit Strg+C.`,
     );
   },
+);
+
+serve(
+  {
+    fetch: app.fetch,
+    hostname,
+    port: Number(Bun.env.HTTP1_PORT ?? 3001),
+    createServer: createHttpsServer,
+    serverOptions: { cert, key },
+  },
+  (address) => console.info(`HTTP/1.1: https://${hostname}:${address.port}`),
 );

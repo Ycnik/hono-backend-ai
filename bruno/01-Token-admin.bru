@@ -1,0 +1,27 @@
+meta {
+  name: Token-admin
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{issuer}}/protocol/openid-connect/token
+  body: formUrlEncoded
+  auth: none
+}
+
+body:form-urlencoded {
+  grant_type: password
+  client_id: javascript-client
+  client_secret: {{clientSecret}}
+  username: admin
+  password: {{testPassword}}
+}
+
+script:post-response {
+  bru.setVar("adminToken", res.getBody().access_token);
+}
+
+assert {
+  res.status: eq 200
+}

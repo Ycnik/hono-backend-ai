@@ -1,0 +1,15 @@
+meta {
+  name: Suche
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/soldaten?nachname=J%C3%A4&rang=SOLDAT&geschlecht=MAENNLICH&page=1&size=10
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}

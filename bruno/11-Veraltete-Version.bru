@@ -1,0 +1,36 @@
+meta {
+  name: Veraltete-Version
+  type: http
+  seq: 11
+}
+
+put {
+  url: {{baseUrl}}/soldaten/{{id}}
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+  If-Match: "0"
+}
+
+body:json {
+  {
+    "vorname": "Bruno",
+    "nachname": "Abnahme",
+    "username": "{{testUsername}}",
+    "geburtsdatum": "2001-04-20",
+    "geschlecht": "MAENNLICH",
+    "rang": "REKRUT",
+    "ausruestung": {
+      "waffe": "ODM_GEAR",
+      "seriennummer": "AOT-{{testSerial}}"
+    },
+    "verletzungen": []
+  }
+}
+
+assert {
+  res.status: eq 412
+}

@@ -1,0 +1,42 @@
+meta {
+  name: Anlegen
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/soldaten
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "vorname": "Bruno",
+    "nachname": "Abnahme",
+    "username": "{{testUsername}}",
+    "geburtsdatum": "2001-04-20",
+    "geschlecht": "MAENNLICH",
+    "rang": "REKRUT",
+    "ausruestung": {
+      "waffe": "ODM_GEAR",
+      "seriennummer": "AOT-{{testSerial}}"
+    },
+    "verletzungen": []
+  }
+}
+
+script:pre-request {
+  const serial = `${Date.now()}${Math.floor(Math.random() * 100000)}`;
+  bru.setVar("testUsername", `bruno-${serial}`);
+  bru.setVar("testSerial", serial);
+}
+
+script:post-response {
+  bru.setVar("id", res.getBody().id);
+  bru.setVar("etag", res.getHeader("etag"));
+}
+
+assert {
+  res.status: eq 201
+}

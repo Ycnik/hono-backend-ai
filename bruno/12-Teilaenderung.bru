@@ -1,0 +1,25 @@
+meta {
+  name: Teilaenderung
+  type: http
+  seq: 12
+}
+
+patch {
+  url: {{baseUrl}}/soldaten/{{id}}
+  body: json
+  auth: none
+}
+
+headers {
+  If-Match: {{etag}}
+}
+
+body:json {
+  {
+    "rang": "CAPTAIN"
+  }
+}
+
+assert {
+  res.status: eq 204
+}

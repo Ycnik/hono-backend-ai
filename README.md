@@ -30,3 +30,21 @@ Schema- und Relationsdateien liegen unter `src/repository/generated/`. Die Datei
 
 `bun run db:seed` importiert die drei CSV-Dateien in einer Transaktion. Bereits vorhandene
 IDs bleiben erhalten. Die nächste automatisch vergebene ID folgt auf die höchste ID der jeweiligen Tabelle.
+
+## Bruno
+
+Öffne den Ordner `bruno` als Collection und wähle oben rechts das Environment
+`Lokal`. Trage dort für die geheime Variable `clientSecret` den Wert von
+`CLIENT_SECRET` aus der lokalen Projektdatei `.env` ein und speichere ihn.
+Das lokale Testpasswort `p` ist im Environment bereits gesetzt. Aktiviere für
+die lokalen selbstsignierten Zertifikate in Bruno die Option, die
+TLS-Zertifikatsprüfung abzuschalten.
+
+Starte PostgreSQL, Keycloak und das Backend. Führe zuerst `Token-admin` und
+`Token-user` aus. Anschließend die übrigen Requests in der angegebenen Reihenfolge
+ausführen. `Anlegen` erzeugt eine neue Testressource und setzt deren ID und ETag.
+
+Bruno verwendet den zusätzlichen HTTPS-Port 3001 für HTTP/1.1. Der HTTP/2-Port
+3000 bleibt für HTTP/2-Clients verfügbar. Nach Änderungen am Server `bun start`
+neu starten und im Bruno-Environment `Lokal` für `baseUrl`
+`https://127.0.0.1:3001` setzen.
