@@ -22,3 +22,25 @@ export function createSoldat({ ausruestung, verletzungen, ...fields }: SoldatInp
     return row!;
   });
 }
+import { and, eq, sql } from "drizzle-orm";
+import { Problem } from "../service/problem.mts";
+export function updateSoldat(
+  id: number,
+  version: number,
+  input: Partial<SoldatInput>,
+  replace: boolean,
+) {
+  const { ausruestung, verletzungen, ...fields } = input;
+  return db.transaction(async (tx) => {
+    const [updated] = await tx
+      .update(s)
+      .set({ ...fields, version: sql`${s.version} + 1`, aktualisiert: sql`CURRENT_TIMESTAMP` })
+      .where(and(eq(s.id, id), eq(s.version, version)))
+      .returning({ version: s.version });
+    if (!updated) throw new Problem(412, "Die Ressource entspricht nicht der angegebenen Version.");
+    if (replace || ausruestung !== undefined) await tx.delete(a).where(eq(a.soldatId, id));
+    if (replace || verletzungen !== undefined) await tx.delete(v).where(eq(v.soldatId, id));
+    await insertChildren(tx, id, input);
+    return updated;
+  });
+}

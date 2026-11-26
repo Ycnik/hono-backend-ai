@@ -41,3 +41,6 @@ export const suche = z.strictObject({
   size: idSchema.pipe(z.number().max(100)).default(20),
 });
 export type Suche = z.infer<typeof suche>;
+export const aenderung = soldat
+  .partial()
+  .refine((value) => Object.keys(value).length > 0, "Mindestens ein Feld angeben.");
