@@ -6,7 +6,9 @@ Bun 1.4.4 verwenden und im Projektverzeichnis `bun install --frozen-lockfile` au
 Für HTTPS das lokale Entwicklungszertifikat und den zugehörigen privaten Schlüssel
 unter `extras/tls/server.crt` und `extras/tls/server.key` bereitstellen.
 
-`bun run start` startet Hono unter `https://127.0.0.1:3000`.
+`bun start` prüft zuerst den Lesezugriff auf `soldat.soldat` in der konfigurierten Datenbank.
+Bei Erfolg zeigt der Server die URL `https://127.0.0.1:3000/health` an und wartet im Terminal auf Anfragen.
+Mit Strg+C beenden. Ein Datenbankfehler beendet den Start mit Exitcode 1.
 `bun run dev` startet denselben Server mit automatischem Neuladen.
 Der HTTP/2-Test mit einem HTTP/2-fähigen curl und lokalem Testzertifikat lautet
 `curl --http2 -kv https://127.0.0.1:3000/health`.
