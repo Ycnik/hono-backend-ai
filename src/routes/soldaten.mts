@@ -18,3 +18,10 @@ soldaten.get("/:id", async (c) => {
     return c.body(null, 304);
   return c.json(row);
 });
+import { soldat } from "../model/soldat.mts";
+import { createSoldat } from "../repository/schreiben.mts";
+import { jsonBody } from "./body.mts";
+soldaten.post("/", async (c) => {
+  const row = await createSoldat(soldat.parse(await jsonBody(c)));
+  return c.json(row, 201, { Location: `/soldaten/${row.id}`, ETag: `"${row.version}"` });
+});

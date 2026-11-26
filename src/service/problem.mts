@@ -21,6 +21,11 @@ const titles = {
   503: "Service Unavailable",
 };
 export function problemResponse(error: Error, c: Context) {
+  const cause = error.cause ?? error;
+  if (typeof cause === "object" && cause !== null && "code" in cause) {
+    if (cause.code === "23505") error = new Problem(409, "Eindeutiger Wert bereits vergeben.");
+    if (cause.code === "23514") error = new Problem(422, "Datenbankbedingung verletzt.");
+  }
   const problem =
     error instanceof Problem
       ? error
